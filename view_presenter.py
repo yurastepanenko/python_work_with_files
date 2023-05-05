@@ -3,9 +3,10 @@ from tkinter import ttk, END, NW, X
 from presenter import btn_exit
 from presenter import add_files, remove_file, save_files
 
+
 def create_main_root():
-    button_actions = {'Закодировать в файл': lambda :btn_encode(root),
-                      'Декодировать из файла': btn_decode,
+    button_actions = {'Закодировать в файл': lambda: btn_encode(root),
+                      'Декодировать из файла': lambda: btn_decode(root),
                       'Выход из программы': lambda: btn_exit(root),
                       }
 
@@ -52,7 +53,6 @@ def btn_encode(root):
     }
     files = []
     files_var = tk.Variable(value=files)
-    print("btn_decode")
     root.withdraw()  # скрыть главное окно
     window = tk.Tk()
     window.title("Кодирование файла")
@@ -84,5 +84,34 @@ def btn_encode(root):
         button.pack(side="top", fill="x", pady=5)
 
 
-def btn_decode():
-    print("btn_decode")
+def btn_decode(root):
+    decode_buttons = {
+        'Добавить закодированный файл ': lambda: add_files(root),
+        'Добавить информационный файл ': lambda: add_files(),
+        'Раскодировать ': lambda: add_files(),
+    }
+    root.withdraw()  # скрыть главное окно
+    window = tk.Tk()
+    window.title("ДЕКодирование файла")
+
+    # задаем размеры окна
+    window_width = 350
+    window_height = 300
+
+    # получаем размеры экрана
+    screen_width = window.winfo_screenwidth()
+    screen_height = window.winfo_screenheight()
+
+    # вычисляем координаты верхнего левого угла окна
+    x = (screen_width - window_width) // 2
+    y = (screen_height - window_height) // 2
+
+    # задаем положение окна
+    window.geometry('{}x{}+{}+{}'.format(window_width, window_height, x, y))
+    frame = ttk.Frame(window)
+    frame.pack(expand=True, fill='both', padx=5, pady=5)
+
+    max_len = max(len(text) for text in decode_buttons)  # вычисляем максимальную длину текста
+    for item, actions in decode_buttons.items():
+        button = ttk.Button(frame, text=item, width=max_len + 1, command=actions)
+        button.pack(side="top", fill="x", pady=5)
