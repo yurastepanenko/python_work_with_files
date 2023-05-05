@@ -1,8 +1,7 @@
-import tkinter as tk
 from tkinter import ttk
-from models import *
+from models import button_actions, root
 
-root = tk.Tk()
+
 # задаем заголовок программы
 root.title("Работа с бинарными файлами")
 
@@ -25,9 +24,9 @@ root.geometry('{}x{}+{}+{}'.format(window_width, window_height, x, y))
 frame = ttk.Frame(root)
 
 # Создаем кнопки
-max_len = max(len(text) for text in main_menu)  # вычисляем максимальную длину текста
-for item in main_menu:
-    button = ttk.Button(frame, text=item, width=max_len+1)
+max_len = max(len(text) for text in button_actions)  # вычисляем максимальную длину текста
+for item, actions in button_actions.items():
+    button = ttk.Button(frame, text=item, width=max_len+1, command=actions)
     button.pack(side="top", fill="x", pady=5)
 
 # Размещаем фрейм по центру окна
