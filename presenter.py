@@ -55,6 +55,10 @@ def save_files(parent_window, children_window, file_paths=None):
     :param file_paths: передаем содержимое нашего лист-бокса
     :return:
     """
+    if not file_paths:
+        messagebox.showwarning("Ошибка", "Не выбраны файлы для сохранения.")
+        return
+
     save_file_path = filedialog.asksaveasfilename(title="Сохранить как", defaultextension=".txt")
     if save_file_path:
         with open(save_file_path, "wb") as save_file:
