@@ -11,8 +11,10 @@ def btn_exit():
 
 
 root = tk.Tk()
-button_actions = {'Закодировать в файл': btn_decode,
-                  'Декодировать из файла': btn_encode,
+button_actions = {'Закодировать в файл': btn_encode,
+                  'Декодировать из файла': btn_decode,
                   'Выход из программы': btn_exit,
                   }
+
+
 
