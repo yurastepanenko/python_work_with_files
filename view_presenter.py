@@ -90,7 +90,7 @@ def btn_decode(root):
     decode_buttons = {
         'Добавить закодированный файл ': lambda: select_encoded_file(src_file_path),
         'Добавить информационный файл ': lambda: select_info_file(info_file_path),
-        'Раскодировать ': lambda: decode_files(root, ''.join(src_file_path), ''.join(info_file_path)),
+        'Раскодировать ': lambda: decode_files(root, ''.join(src_file_path), ''.join(info_file_path), root, window),
     }
     root.withdraw()  # скрыть главное окно
     window = tk.Tk()

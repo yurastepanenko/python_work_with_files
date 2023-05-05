@@ -79,7 +79,7 @@ def select_info_file(info_file_path):
     info_file_path.append(file_path)
 
 
-def decode_files(root, src_file_path, info_file_path):
+def decode_files(root, src_file_path, info_file_path, parent_window, children_window):
     # Раскодирование файлов с помощью информационного файла
     print('название файла для декодирования', src_file_path)
     print('название файла инфо',info_file_path)
@@ -110,7 +110,7 @@ def decode_files(root, src_file_path, info_file_path):
                     #     blocks.append(int(data))
 
                     # Раскодируем блоки и записываем результат в новый файл
-                    with open(os.path.splitext(filename)[0]+'new.txt', 'wb') as dst_file:
+                    with open(os.path.splitext(filename)[0]+'_new.txt', 'wb') as dst_file:
                         print('новое название - ', os.path.splitext(filename)[0])
                         # for block in blocks:
                         #     print(block)
@@ -119,5 +119,8 @@ def decode_files(root, src_file_path, info_file_path):
         messagebox.showinfo("Успешно", "Файлы успешно раскодированы.")
     else:
         messagebox.showwarning("Ошибка", "Не выбраны файлы для раскодирования.")
+
+    parent_window.deiconify()  # Восстанвливаем основное окно
+    btn_exit(children_window)  # Уничтожаем дочернее окно
 
 
