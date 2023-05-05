@@ -1,3 +1,3 @@
-from presenter import  btn_exit
-from view_presenter import btn_decode, btn_encode
-
+# задаем размеры окна
+window_width = 350
+window_height = 300

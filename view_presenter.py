@@ -2,11 +2,47 @@ import tkinter as tk
 from tkinter import ttk, END, NW, X
 from presenter import btn_exit
 from presenter import add_files, remove_file, save_files, select_encoded_file, select_info_file, decode_files
+from models import *
+
+
+def get_sizes_custom_window(custom_window):
+    """
+    функция для работы с координатами окон
+    :param custom_window: окно для изменения
+    :return: ничего не возвращает
+    """
+    # получаем размеры экрана
+    screen_width = custom_window.winfo_screenwidth()
+    screen_height = custom_window.winfo_screenheight()
+
+    # вычисляем координаты верхнего левого угла окна
+    x = (screen_width - window_width) // 2
+    y = (screen_height - window_height) // 2
+
+    # задаем положение окна
+    custom_window.geometry('{}x{}+{}+{}'.format(window_width, window_height, x, y))
+
+
+def create_buttons(button_actions, frame):
+    """
+    функция для динамического создания кнопок и привязки событий
+    :param button_actions: словарь с кнопками и соытиями
+    :param frame: фрейм на котором распологаются кнопки
+    :return: ничего не возвращает
+    """
+    max_len = max(len(text) for text in button_actions)  # вычисляем максимальную длину текста
+    for item, actions in button_actions.items():
+        button = ttk.Button(frame, text=item, width=max_len + 1, command=actions)
+        button.pack(side="top", fill="x", pady=5)
 
 
 def create_main_root():
-    button_actions = {'Закодировать в файл': lambda: btn_encode(root),
-                      'Декодировать из файла': lambda: btn_decode(root),
+    """
+    функция для создания основного окна программы
+    :return: возвращает объект окна
+    """
+    button_actions = {'Закодировать в файл': lambda: create_window_encode(root),
+                      'Декодировать из файла': lambda: create_window_decode(root),
                       'Выход из программы': lambda: btn_exit(root),
                       }
 
@@ -14,29 +50,14 @@ def create_main_root():
     # задаем заголовок программы
     root.title("Работа с бинарными файлами")
 
-    # задаем размеры окна
-    window_width = 350
-    window_height = 100
-
-    # получаем размеры экрана
-    screen_width = root.winfo_screenwidth()
-    screen_height = root.winfo_screenheight()
-
-    # вычисляем координаты верхнего левого угла окна
-    x = (screen_width - window_width) // 2
-    y = (screen_height - window_height) // 2
-
-    # задаем положение окна
-    root.geometry('{}x{}+{}+{}'.format(window_width, window_height, x, y))
+    # работа с координатами
+    get_sizes_custom_window(root)
 
     # Создаем фрейм для размещения кнопок
     frame = ttk.Frame(root)
 
     # Создаем кнопки
-    max_len = max(len(text) for text in button_actions)  # вычисляем максимальную длину текста
-    for item, actions in button_actions.items():
-        button = ttk.Button(frame, text=item, width=max_len+1, command=actions)
-        button.pack(side="top", fill="x", pady=5)
+    create_buttons(button_actions, frame)
 
     # Размещаем фрейм по центру окна
     frame.place(relx=0.5, rely=0.5, anchor="center")
@@ -45,7 +66,7 @@ def create_main_root():
     return root
 
 
-def btn_encode(root):
+def create_window_encode(root):
     encode_buttons = {
         'Добавить файлы': lambda: add_files(files_listbox),
         'Удалить файл': lambda: remove_file(files_listbox),
@@ -57,34 +78,20 @@ def btn_encode(root):
     window = tk.Tk()
     window.title("Кодирование файла")
 
+    # работа с координатами
+    get_sizes_custom_window(window)
 
-    # задаем размеры окна
-    window_width = 350
-    window_height = 300
-
-    # получаем размеры экрана
-    screen_width = window.winfo_screenwidth()
-    screen_height = window.winfo_screenheight()
-
-    # вычисляем координаты верхнего левого угла окна
-    x = (screen_width - window_width) // 2
-    y = (screen_height - window_height) // 2
-
-    # задаем положение окна
-    window.geometry('{}x{}+{}+{}'.format(window_width, window_height, x, y))
     frame = ttk.Frame(window)
     frame.pack(expand=True, fill='both', padx=5, pady=5)
     files_listbox = tk.Listbox(frame, listvariable=files_var)
     files_listbox.pack(anchor=NW, fill=X, padx=5, pady=5)
     frame.place(relx=0.5, rely=0.5, anchor="center")
 
-    max_len = max(len(text) for text in encode_buttons)  # вычисляем максимальную длину текста
-    for item, actions in encode_buttons.items():
-        button = ttk.Button(frame, text=item, width=max_len + 1, command=actions)
-        button.pack(side="top", fill="x", pady=5)
+    # Создаем кнопки
+    create_buttons(encode_buttons, frame)
 
 
-def btn_decode(root):
+def create_window_decode(root):
     src_file_path = []
     info_file_path = []
     decode_buttons = {
@@ -96,24 +103,11 @@ def btn_decode(root):
     window = tk.Tk()
     window.title("ДЕКодирование файла")
 
-    # задаем размеры окна
-    window_width = 350
-    window_height = 300
+    # работа с координатами
+    get_sizes_custom_window(window)
 
-    # получаем размеры экрана
-    screen_width = window.winfo_screenwidth()
-    screen_height = window.winfo_screenheight()
-
-    # вычисляем координаты верхнего левого угла окна
-    x = (screen_width - window_width) // 2
-    y = (screen_height - window_height) // 2
-
-    # задаем положение окна
-    window.geometry('{}x{}+{}+{}'.format(window_width, window_height, x, y))
     frame = ttk.Frame(window)
     frame.pack(expand=True, fill='both', padx=5, pady=5)
 
-    max_len = max(len(text) for text in decode_buttons)  # вычисляем максимальную длину текста
-    for item, actions in decode_buttons.items():
-        button = ttk.Button(frame, text=item, width=max_len + 1, command=actions)
-        button.pack(side="top", fill="x", pady=5)
+    # Создаем кнопки
+    create_buttons(decode_buttons, frame)
