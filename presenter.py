@@ -1,7 +1,15 @@
 from tkinter import *
 from tkinter import ttk
-from tkinter import filedialog
+from tkinter import filedialog, messagebox
 import os
+
+
+def btn_exit(root):
+    """
+    функция которая завершает работу приложения(вынесена в данный файл, чтобы не было зацикливаний при импортах)
+    :return: ничего не возвращает
+    """
+    root.destroy()  # закрываем окно
 
 
 def add_files(files_listbox):
@@ -41,7 +49,7 @@ def generate_file_sizes(file_paths, save_file_path):
             sizes_file.write(f"{file_path} - {file_size} bytes\n")
 
 
-def save_files(file_paths=None):
+def save_files(parent_window, children_window, file_paths=None):
     """
     функция кодирует в файл другие файлы
     :param file_paths: передаем содержимое нашего лист-бокса
@@ -56,50 +64,18 @@ def save_files(file_paths=None):
                     save_file.write(file_content)
         generate_file_sizes(file_paths, save_file_path)
 
+    parent_window.deiconify()  # Восстанвливаем основное окно
+    messagebox.showinfo("Успешно", "Операция выполнена успешно! Файл закодирован!")
+    btn_exit(children_window)  # Уничтожаем дочернее окно
 
-def btn_encode():
-    decode_buttons = {
-        'Добавить файлы': lambda: add_files(files_listbox),
-        'Удалить файл': lambda: remove_file(files_listbox),
-        'Сохранить файлы': lambda: save_files(files_listbox.get(0, END)),
-    }
-    files = []
-    files_var = Variable(value=files)
-    print("btn_decode")
-    window = Tk()
-    window.title("Кодирование файла")
 
-    # задаем размеры окна
-    window_width = 350
-    window_height = 300
 
-    # получаем размеры экрана
-    screen_width = window.winfo_screenwidth()
-    screen_height = window.winfo_screenheight()
-
-    # вычисляем координаты верхнего левого угла окна
-    x = (screen_width - window_width) // 2
-    y = (screen_height - window_height) // 2
-
-    # задаем положение окна
-    window.geometry('{}x{}+{}+{}'.format(window_width, window_height, x, y))
-    frame = ttk.Frame(window)
-    frame.pack(expand=True, fill='both', padx=5, pady=5)
-    files_listbox = Listbox(frame, listvariable=files_var)
-    files_listbox.pack(anchor=NW, fill=X, padx=5, pady=5)
-    frame.place(relx=0.5, rely=0.5, anchor="center")
-
-    max_len = max(len(text) for text in decode_buttons)  # вычисляем максимальную длину текста
-    for item, actions in decode_buttons.items():
-        button = ttk.Button(frame, text=item, width=max_len + 1, command=actions)
-        button.pack(side="top", fill="x", pady=5)
 
   
 
 
 
-def btn_decode():
-    print("btn_decode")
+
 
 
 

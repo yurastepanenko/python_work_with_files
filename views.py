@@ -1,3 +1,3 @@
-from view_presenter import root
+from view_presenter import create_main_root
 
-root.mainloop()
+root = create_main_root()
