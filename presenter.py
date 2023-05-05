@@ -27,6 +27,12 @@ def remove_file(files_listbox):
 
 
 def generate_file_sizes(file_paths, save_file_path):
+    """
+    функция, которая генерирует файл с размерами
+    :param file_paths: путь к файлу
+    :param save_file_path: размер файла
+    :return:
+    """
     save_file_dir = os.path.dirname(save_file_path)
     sizes_file_path = os.path.join(save_file_dir, "file_sizes.txt")
     with open(sizes_file_path, "w") as sizes_file:
@@ -36,7 +42,12 @@ def generate_file_sizes(file_paths, save_file_path):
 
 
 def save_files(file_paths=None):
-    save_file_path = filedialog.asksaveasfilename(title="Save As", defaultextension=".txt")
+    """
+    функция кодирует в файл другие файлы
+    :param file_paths: передаем содержимое нашего лист-бокса
+    :return:
+    """
+    save_file_path = filedialog.asksaveasfilename(title="Сохранить как", defaultextension=".txt")
     if save_file_path:
         with open(save_file_path, "wb") as save_file:
             for file_path in file_paths:
@@ -52,7 +63,7 @@ def btn_encode():
         'Удалить файл': lambda: remove_file(files_listbox),
         'Сохранить файлы': lambda: save_files(files_listbox.get(0, END)),
     }
-    files = ['dd']
+    files = []
     files_var = Variable(value=files)
     print("btn_decode")
     window = Tk()
