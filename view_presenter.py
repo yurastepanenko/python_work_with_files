@@ -43,7 +43,7 @@ def create_buttons(button_actions, frame):
     """
     max_len = max(len(text) for text in button_actions)  # вычисляем максимальную длину текста
     for item, actions in button_actions.items():
-        button = ttk.Button(frame, text=item, width=max_len + 1, command=actions)
+        button = ttk.Button(frame, text=item, width=max_len + 5, command=actions)
         button.pack(side="top", fill="x", pady=5)
 
 
@@ -123,7 +123,7 @@ def create_window_decode(root):
 
     frame = ttk.Frame(window)
     frame.pack(expand=True, fill='both', padx=5, pady=5)
-
+    frame.place(relx=0.5, rely=0.5, anchor="center")
     # Создаем кнопки
     create_buttons(decode_buttons, frame)
 
