@@ -5,6 +5,17 @@ from presenter import add_files, remove_file, save_files, select_encoded_file, s
 from models import *
 
 
+def on_window_close(parent_window, child_window):
+    """
+    функция которая при закрытии через крестик - восстановит основное окно программы
+    :param parent_window: основное окно программы
+    :param child_window: дочерннее окно программы
+    :return:
+    """
+    parent_window.deiconify()  # Восстанавливаем основное окно
+    child_window.destroy()  # Уничтожаем дочернее окно
+
+
 def get_sizes_custom_window(custom_window):
     """
     функция для работы с координатами окон
@@ -90,6 +101,10 @@ def create_window_encode(root):
     # Создаем кнопки
     create_buttons(encode_buttons, frame)
 
+    # Обработчик события закрытия окна
+    window.protocol("WM_DELETE_WINDOW", lambda: on_window_close(root, window))
+
+
 
 def create_window_decode(root):
     src_file_path = []
@@ -111,3 +126,7 @@ def create_window_decode(root):
 
     # Создаем кнопки
     create_buttons(decode_buttons, frame)
+
+    # Обработчик события закрытия окна
+    window.protocol("WM_DELETE_WINDOW", lambda: on_window_close(root, window))
+
