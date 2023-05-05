@@ -1,6 +1,7 @@
 from tkinter import *
 from tkinter import ttk
 from tkinter import filedialog
+import os
 
 
 def add_files(files_listbox):
@@ -25,24 +26,42 @@ def remove_file(files_listbox):
         files_listbox.delete(item)
 
 
-def save_files():
-    pass
+def generate_file_sizes(file_paths, save_file_path):
+    save_file_dir = os.path.dirname(save_file_path)
+    sizes_file_path = os.path.join(save_file_dir, "file_sizes.txt")
+    with open(sizes_file_path, "w") as sizes_file:
+        for file_path in file_paths:
+            file_size = os.path.getsize(file_path)
+            sizes_file.write(f"{file_path} - {file_size} bytes\n")
+
+
+def save_files(file_paths=None):
+    save_file_path = filedialog.asksaveasfilename(title="Save As", defaultextension=".txt")
+    if save_file_path:
+        with open(save_file_path, "wb") as save_file:
+            for file_path in file_paths:
+                with open(file_path, "rb") as f:
+                    file_content = f.read()
+                    save_file.write(file_content)
+        generate_file_sizes(file_paths, save_file_path)
 
 
 def btn_encode():
     decode_buttons = {
         'Добавить файлы': lambda: add_files(files_listbox),
         'Удалить файл': lambda: remove_file(files_listbox),
-        'Сохранить файлы': '',
+        'Сохранить файлы': lambda: save_files(files_listbox.get(0, END)),
     }
     files = ['dd']
     files_var = Variable(value=files)
     print("btn_decode")
     window = Tk()
     window.title("Кодирование файла")
+
     # задаем размеры окна
     window_width = 350
     window_height = 300
+
     # получаем размеры экрана
     screen_width = window.winfo_screenwidth()
     screen_height = window.winfo_screenheight()
