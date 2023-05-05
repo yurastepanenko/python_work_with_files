@@ -70,19 +70,37 @@ def save_files(parent_window, children_window, file_paths=None):
 
 
 def select_encoded_file(src_file_path):
+    """
+    функция для выбора закодированного файла
+    :param src_file_path: путь к файлу
+    :return: ничего не возвращает
+    """
     file_path = filedialog.askopenfilename(title="Выберите закодированный файл")
     src_file_path.append(file_path)
 
 
 def select_info_file(info_file_path):
+    """
+    функция для выбора файла c описанием
+    :param info_file_path: путь к файлу
+    :return: ничего не возвращает
+    """
     file_path = filedialog.askopenfilename(title="Выберите текстовый файл с информацией о размерах файлов")
     info_file_path.append(file_path)
 
 
 def decode_files(root, src_file_path, info_file_path, parent_window, children_window):
-    # Раскодирование файлов с помощью информационного файла
+    """
+    функция для Раскодирование файлов с помощью информационного файла
+    :param root: объект программы
+    :param src_file_path: путь к файлу декодирования
+    :param info_file_path: путь к файлу с информацией
+    :param parent_window: основное окно программы
+    :param children_window: окно декодирования
+    :return:
+    """
 
-    old_size = 0
+    old_size = 0  # Переменная для сдвига по файлу
     if src_file_path and info_file_path:
         with open(info_file_path) as f:
             for line in f:
