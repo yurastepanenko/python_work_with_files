@@ -81,41 +81,26 @@ def select_info_file(info_file_path):
 
 def decode_files(root, src_file_path, info_file_path, parent_window, children_window):
     # Раскодирование файлов с помощью информационного файла
-    print('название файла для декодирования', src_file_path)
-    print('название файла инфо',info_file_path)
 
+    old_size = 0
     if src_file_path and info_file_path:
         with open(info_file_path) as f:
             for line in f:
                 filename, size = line.strip().split('-')
                 size = int(size)
-                print(filename, size, 'fffffff', type(size))
+                print(filename, size, old_size)
 
                 # Открываем закодированный файл
                 with open(src_file_path, 'rb') as src_file:
                     # Установка позиции чтения в нужное место
+                    src_file.seek(old_size)
                     data = src_file.read(size)
-                    # print(data)
-                    # src_file.seek(0, size)
-                    # data = src_file.read(size)
-                    # print(data)
-                    # Читаем размерности блоков из информационного файла
 
-                    # blocks = []
-                    # while True:
-                    #     data = f.read(size)
-                    #     print(data)
-                    #     if not data:
-                    #         break
-                    #     blocks.append(int(data))
-
-                    # Раскодируем блоки и записываем результат в новый файл
+                    #записываем результат в новый файл
                     with open(os.path.splitext(filename)[0]+'_new.txt', 'wb') as dst_file:
                         print('новое название - ', os.path.splitext(filename)[0])
-                        # for block in blocks:
-                        #     print(block)
-                        #     data = src_file.read(block)
                         dst_file.write(data)
+                        old_size += size
         messagebox.showinfo("Успешно", "Файлы успешно раскодированы.")
     else:
         messagebox.showwarning("Ошибка", "Не выбраны файлы для раскодирования.")
