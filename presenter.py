@@ -77,7 +77,8 @@ def select_encoded_file(src_file_path, selected_file_label):
     """
     функция для выбора закодированного файла
     :param src_file_path: путь к файлу
-    :return: новый текст лейбла
+    :param selected_file_label: метка для описания src - файла
+    :return: новый текст и цыет лейбла
     """
     file_path = filedialog.askopenfilename(title="Выберите закодированный файл")
     src_file_path.append(file_path)
@@ -89,7 +90,8 @@ def select_info_file(info_file_path, selected_info_file_label):
     """
     функция для выбора файла c описанием
     :param info_file_path: путь к файлу
-    :return: ничего не возвращает
+    :param selected_info_file_label: метка для описания info - файла
+    :return: новый текст и цыет лейбла
     """
     file_path = filedialog.askopenfilename(title="Выберите текстовый файл с информацией о размерах файлов")
     info_file_path.append(file_path)
