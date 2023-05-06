@@ -4,6 +4,23 @@ from tkinter import filedialog, messagebox
 import os
 
 
+def try_decorator(fn):
+    """
+    функция для обработки ошибок
+    :param *args, **kwargs: любое кол-во параметров
+    :return: выоленение ф-ии или возврат ошибки
+    """
+    def wrapped(*args, **kwargs):
+        try:
+            return fn(*args, **kwargs)
+        except ValueError as e:
+            messagebox.showerror("Ошибка", "Вероятнее всего вы выбрали некорректный info-file")
+        except Exception as e:
+            messagebox.showerror("Ошибка", f"Произошла ошибка: {e}")
+
+    return wrapped
+
+
 def btn_exit(root):
     """
     функция которая завершает работу приложения(вынесена в данный файл, чтобы не было зацикливаний при импортах)
@@ -81,6 +98,7 @@ def select_encoded_file(src_file_path, selected_file_label):
     :return: новый текст и цыет лейбла
     """
     file_path = filedialog.askopenfilename(title="Выберите закодированный файл")
+    src_file_path.clear()  # Очистка списка info_file_path
     src_file_path.append(file_path)
     selected_file_label.configure(text='src:'+file_path, background='green')
     return selected_file_label
@@ -94,11 +112,13 @@ def select_info_file(info_file_path, selected_info_file_label):
     :return: новый текст и цыет лейбла
     """
     file_path = filedialog.askopenfilename(title="Выберите текстовый файл с информацией о размерах файлов")
+    info_file_path.clear()  # Очистка списка info_file_path
     info_file_path.append(file_path)
     selected_info_file_label.configure(text='info:'+file_path, background='green')
     return selected_info_file_label
 
 
+@try_decorator
 def decode_files(root, src_file_path, info_file_path, parent_window, children_window):
     """
     функция для Раскодирование файлов с помощью информационного файла
