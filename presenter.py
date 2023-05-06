@@ -73,17 +73,19 @@ def save_files(parent_window, children_window, file_paths=None):
     btn_exit(children_window)  # Уничтожаем дочернее окно
 
 
-def select_encoded_file(src_file_path):
+def select_encoded_file(src_file_path, selected_file_label):
     """
     функция для выбора закодированного файла
     :param src_file_path: путь к файлу
-    :return: ничего не возвращает
+    :return: новый текст лейбла
     """
     file_path = filedialog.askopenfilename(title="Выберите закодированный файл")
     src_file_path.append(file_path)
+    selected_file_label.configure(text='src:'+file_path, background='green')
+    return selected_file_label
 
 
-def select_info_file(info_file_path):
+def select_info_file(info_file_path, selected_info_file_label):
     """
     функция для выбора файла c описанием
     :param info_file_path: путь к файлу
@@ -91,6 +93,8 @@ def select_info_file(info_file_path):
     """
     file_path = filedialog.askopenfilename(title="Выберите текстовый файл с информацией о размерах файлов")
     info_file_path.append(file_path)
+    selected_info_file_label.configure(text='info:'+file_path, background='green')
+    return selected_info_file_label
 
 
 def decode_files(root, src_file_path, info_file_path, parent_window, children_window):
@@ -110,7 +114,6 @@ def decode_files(root, src_file_path, info_file_path, parent_window, children_wi
             for line in f:
                 filename, size = line.strip().split('-')
                 size = int(size)
-                print(filename, size, old_size)
 
                 # Открываем закодированный файл
                 with open(src_file_path, 'rb') as src_file:
@@ -120,7 +123,6 @@ def decode_files(root, src_file_path, info_file_path, parent_window, children_wi
 
                     #записываем результат в новый файл
                     with open(os.path.splitext(filename)[0]+'_new.txt', 'wb') as dst_file:
-                        print('новое название - ', os.path.splitext(filename)[0])
                         dst_file.write(data)
                         old_size += size
         messagebox.showinfo("Успешно", "Файлы успешно раскодированы.")

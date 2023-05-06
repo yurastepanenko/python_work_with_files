@@ -105,13 +105,12 @@ def create_window_encode(root):
     window.protocol("WM_DELETE_WINDOW", lambda: on_window_close(root, window))
 
 
-
 def create_window_decode(root):
     src_file_path = []
     info_file_path = []
     decode_buttons = {
-        'Добавить закодированный файл ': lambda: select_encoded_file(src_file_path),
-        'Добавить информационный файл ': lambda: select_info_file(info_file_path),
+        'Добавить закодированный файл ': lambda: select_encoded_file(src_file_path, selected_src_file_label),
+        'Добавить информационный файл ': lambda: select_info_file(info_file_path, selected_info_file_label),
         'Раскодировать ': lambda: decode_files(root, ''.join(src_file_path), ''.join(info_file_path), root, window),
     }
     root.withdraw()  # скрыть главное окно
@@ -124,6 +123,12 @@ def create_window_decode(root):
     frame = ttk.Frame(window)
     frame.pack(expand=True, fill='both', padx=5, pady=5)
     frame.place(relx=0.5, rely=0.5, anchor="center")
+
+    selected_src_file_label = ttk.Label(frame, text="Не выбран файл для декодирования",background='red')
+    selected_src_file_label.pack()
+    selected_info_file_label = ttk.Label(frame, text="Не выбран информационный файл для декодирования",background='red')
+    selected_info_file_label.pack()
+
     # Создаем кнопки
     create_buttons(decode_buttons, frame)
 
