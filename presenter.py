@@ -144,7 +144,7 @@ def decode_files(root, src_file_path, info_file_path, parent_window, children_wi
                     data = src_file.read(size)
 
                     #записываем результат в новый файл
-                    with open(os.path.splitext(filename)[0]+'_new.txt', 'wb') as dst_file:
+                    with open(os.path.splitext(filename)[0]+'_new'+os.path.splitext(filename)[1], 'wb') as dst_file:
                         dst_file.write(data)
                         old_size += size
         messagebox.showinfo("Успешно", "Файлы успешно раскодированы.")
