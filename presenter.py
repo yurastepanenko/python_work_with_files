@@ -90,32 +90,26 @@ def save_files(parent_window, children_window, file_paths=None):
     btn_exit(children_window)  # Уничтожаем дочернее окно
 
 
-def select_encoded_file(src_file_path, selected_file_label):
+def select_tips_file(type_file_path, selected_file_label, type):
     """
     функция для выбора закодированного файла
     :param src_file_path: путь к файлу
     :param selected_file_label: метка для описания src - файла
-    :return: новый текст и цыет лейбла
+    param type: тип для нашего лейбла
+    :return: новый текст и цвет лейбла
     """
-    file_path = filedialog.askopenfilename(title="Выберите закодированный файл")
-    src_file_path.clear()  # Очистка списка info_file_path
-    src_file_path.append(file_path)
-    selected_file_label.configure(text='src:'+file_path, background='green')
+    if type == 'src':
+        title ="Выберите закодированный файл"
+        text = 'src: '
+    elif type == 'info':
+        title = "Выберите текстовый файл с информацией о размерах файлов"
+        text = 'info: '
+
+    file_path = filedialog.askopenfilename(title=title)
+    type_file_path.clear()  # Очистка списка info_file_path
+    type_file_path.append(file_path)
+    selected_file_label.configure(text=text + file_path, background='green')
     return selected_file_label
-
-
-def select_info_file(info_file_path, selected_info_file_label):
-    """
-    функция для выбора файла c описанием
-    :param info_file_path: путь к файлу
-    :param selected_info_file_label: метка для описания info - файла
-    :return: новый текст и цыет лейбла
-    """
-    file_path = filedialog.askopenfilename(title="Выберите текстовый файл с информацией о размерах файлов")
-    info_file_path.clear()  # Очистка списка info_file_path
-    info_file_path.append(file_path)
-    selected_info_file_label.configure(text='info:'+file_path, background='green')
-    return selected_info_file_label
 
 
 @try_decorator

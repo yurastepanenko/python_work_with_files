@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import ttk, END, NW, X
 from presenter import btn_exit
-from presenter import add_files, remove_file, save_files, select_encoded_file, select_info_file, decode_files
+from presenter import add_files, remove_file, save_files, select_tips_file, decode_files
 from models import *
 
 
@@ -109,8 +109,8 @@ def create_window_decode(root):
     src_file_path = []
     info_file_path = []
     decode_buttons = {
-        'Добавить закодированный файл ': lambda: select_encoded_file(src_file_path, selected_src_file_label),
-        'Добавить информационный файл ': lambda: select_info_file(info_file_path, selected_info_file_label),
+        'Добавить закодированный файл ': lambda: select_tips_file(src_file_path, selected_src_file_label, 'src'),
+        'Добавить информационный файл ': lambda: select_tips_file(info_file_path, selected_info_file_label, 'info'),
         'Раскодировать ': lambda: decode_files(root, ''.join(src_file_path), ''.join(info_file_path), root, window),
     }
     root.withdraw()  # скрыть главное окно
