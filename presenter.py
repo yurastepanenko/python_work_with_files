@@ -1,7 +1,7 @@
-from tkinter import *
-from tkinter import ttk
-from tkinter import filedialog, messagebox
+from tkinter import filedialog, messagebox, END
 import os
+from models import window_width, window_height
+
 
 
 def try_decorator(fn):
@@ -126,61 +126,47 @@ def read_info_file(info_file_path):
     return file_sizes
 
 
-def read_encoded_data(src_file_path, start, size):
+def get_sizes_custom_window(custom_window):
     """
-    Чтение закодированных данных из файла
-    :param src_file_path: путь к файлу с закодированными данными
-    :param start: начальная позиция чтения
-    :param size: размер данных для чтения
-    :return: прочитанные данные
+    функция для работы с координатами окон
+    :param custom_window: окно для изменения
+    :return: ничего не возвращает
     """
-    with open(src_file_path, 'rb') as src_file:
-        src_file.seek(start)
-        data = src_file.read(size)
-    return data
+    # получаем размеры экрана
+    screen_width = custom_window.winfo_screenwidth()
+    screen_height = custom_window.winfo_screenheight()
+
+    # вычисляем координаты верхнего левого угла окна
+    x = (screen_width - window_width) // 2
+    y = (screen_height - window_height) // 2
+
+    # задаем положение окна
+    custom_window.geometry('{}x{}+{}+{}'.format(window_width, window_height, x, y))
 
 
-def decode_file(src_file_path, info_file_path, filename, size):
+def on_window_close(parent_window, child_window):
     """
-    Раскодирование одного файла
-    :param src_file_path: путь к файлу с закодированными данными
-    :param info_file_path: путь к файлу с информацией о размерах
-    :param filename: имя файла для раскодирования
-    :param size: размер файла
-    """
-    encoded_data = read_encoded_data(src_file_path, 0, size)
-
-    # Запись раскодированных данных в новый файл
-    decoded_file_path = os.path.splitext(filename)[0] + '_new' + os.path.splitext(filename)[1]
-    with open(decoded_file_path, 'wb') as dst_file:
-        dst_file.write(encoded_data)
-
-
-@try_decorator
-def decode_files(root, src_file_path, info_file_path, parent_window, children_window):
-    """
-    функция для Раскодирование файлов с помощью информационного файла
-    :param root: объект программы
-    :param src_file_path: путь к файлу декодирования
-    :param info_file_path: путь к файлу с информацией
+    функция которая при закрытии через крестик - восстановит основное окно программы
     :param parent_window: основное окно программы
-    :param children_window: окно декодирования
+    :param child_window: дочерннее окно программы
     :return:
     """
-
-    if not src_file_path or not info_file_path:
-        messagebox.showwarning("Ошибка", "Не выбраны файлы для раскодирования.")
-        return
-
-    file_sizes = read_info_file(info_file_path)
-    old_size = 0
-
-    for filename, size in file_sizes:
-        decode_file(src_file_path, info_file_path, filename, size)
-        old_size += size
-
-    messagebox.showinfo("Успешно", "Файлы успешно раскодированы.")
-
     parent_window.deiconify()  # Восстанавливаем основное окно
-    btn_exit(children_window)  # Уничтожаем дочернее окно
+    child_window.destroy()  # Уничтожаем дочернее окно
+
+
+def create_buttons(button_actions, frame):
+    """
+    функция для динамического создания кнопок и привязки событий
+    :param button_actions: словарь с кнопками и соытиями
+    :param frame: фрейм на котором распологаются кнопки
+    :return: ничего не возвращает
+    """
+    max_len = max(len(text) for text in button_actions)  # вычисляем максимальную длину текста
+    for item, actions in button_actions.items():
+        button = ttk.Button(frame, text=item, width=max_len + 5, command=actions)
+        button.pack(side="top", fill="x", pady=5)
+
+
+
 
