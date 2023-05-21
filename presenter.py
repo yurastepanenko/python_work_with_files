@@ -112,6 +112,50 @@ def select_tips_file(type_file_path, selected_file_label, type):
     return selected_file_label
 
 
+def read_info_file(info_file_path):
+    """
+    Чтение файла с информацией о размерах
+    :param info_file_path: путь к файлу с информацией
+    :return: список кортежей (имя файла, размер)
+    """
+    file_sizes = []
+    with open(info_file_path) as f:
+        for line in f:
+            filename, size = line.strip().split('-')
+            file_sizes.append((filename, int(size)))
+    return file_sizes
+
+
+def read_encoded_data(src_file_path, start, size):
+    """
+    Чтение закодированных данных из файла
+    :param src_file_path: путь к файлу с закодированными данными
+    :param start: начальная позиция чтения
+    :param size: размер данных для чтения
+    :return: прочитанные данные
+    """
+    with open(src_file_path, 'rb') as src_file:
+        src_file.seek(start)
+        data = src_file.read(size)
+    return data
+
+
+def decode_file(src_file_path, info_file_path, filename, size):
+    """
+    Раскодирование одного файла
+    :param src_file_path: путь к файлу с закодированными данными
+    :param info_file_path: путь к файлу с информацией о размерах
+    :param filename: имя файла для раскодирования
+    :param size: размер файла
+    """
+    encoded_data = read_encoded_data(src_file_path, 0, size)
+
+    # Запись раскодированных данных в новый файл
+    decoded_file_path = os.path.splitext(filename)[0] + '_new' + os.path.splitext(filename)[1]
+    with open(decoded_file_path, 'wb') as dst_file:
+        dst_file.write(encoded_data)
+
+
 @try_decorator
 def decode_files(root, src_file_path, info_file_path, parent_window, children_window):
     """
@@ -124,28 +168,19 @@ def decode_files(root, src_file_path, info_file_path, parent_window, children_wi
     :return:
     """
 
-    old_size = 0  # Переменная для сдвига по файлу
-    if src_file_path and info_file_path:
-        with open(info_file_path) as f:
-            for line in f:
-                filename, size = line.strip().split('-')
-                size = int(size)
-
-                # Открываем закодированный файл
-                with open(src_file_path, 'rb') as src_file:
-                    # Установка позиции чтения в нужное место
-                    src_file.seek(old_size)
-                    data = src_file.read(size)
-
-                    #записываем результат в новый файл
-                    with open(os.path.splitext(filename)[0]+'_new'+os.path.splitext(filename)[1], 'wb') as dst_file:
-                        dst_file.write(data)
-                        old_size += size
-        messagebox.showinfo("Успешно", "Файлы успешно раскодированы.")
-    else:
+    if not src_file_path or not info_file_path:
         messagebox.showwarning("Ошибка", "Не выбраны файлы для раскодирования.")
+        return
 
-    parent_window.deiconify()  # Восстанвливаем основное окно
+    file_sizes = read_info_file(info_file_path)
+    old_size = 0
+
+    for filename, size in file_sizes:
+        decode_file(src_file_path, info_file_path, filename, size)
+        old_size += size
+
+    messagebox.showinfo("Успешно", "Файлы успешно раскодированы.")
+
+    parent_window.deiconify()  # Восстанавливаем основное окно
     btn_exit(children_window)  # Уничтожаем дочернее окно
-
 
