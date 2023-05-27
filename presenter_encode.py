@@ -1,10 +1,11 @@
 from presenter import (add_files,
                        remove_file,
-                       save_files,on_window_close, get_sizes_custom_window
+                       save_files,on_window_close,
+                       get_sizes_custom_window,
+                       create_buttons
                        )
 from view_presenter import (tk,
-                            ttk,
-                            create_buttons)
+                            ttk)
 from tkinter import END, NW, X
 
 

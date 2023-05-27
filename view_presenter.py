@@ -1,17 +1,11 @@
 import tkinter as tk
 from tkinter import ttk
-from presenter import btn_exit
-from models import (window_width,
-                    window_height)
+from presenter import (btn_exit,
+                       create_buttons,
+                       get_sizes_custom_window)
+
 from presenter_decode import create_window_decode
 from presenter_encode import create_window_encode
-
-
-
-
-
-
-
 
 
 def create_main_root():

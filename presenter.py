@@ -1,7 +1,6 @@
-from tkinter import filedialog, messagebox, END
+from tkinter import filedialog, messagebox, END, ttk
 import os
 from models import window_width, window_height
-
 
 
 def try_decorator(fn):

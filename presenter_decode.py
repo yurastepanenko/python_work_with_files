@@ -1,8 +1,14 @@
 from tkinter import messagebox
 import os
-from presenter import select_tips_file, try_decorator, read_info_file, on_window_close, get_sizes_custom_window, btn_exit
+from presenter import (select_tips_file,
+                       try_decorator,
+                       read_info_file,
+                       on_window_close,
+                       get_sizes_custom_window,
+                       btn_exit,
+                       create_buttons)
 from presenter_encode import read_encoded_data
-from view_presenter import tk, ttk,  create_buttons
+from view_presenter import tk, ttk
 
 
 
