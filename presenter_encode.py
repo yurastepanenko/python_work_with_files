@@ -1,6 +1,7 @@
 from presenter import (add_files,
                        remove_file,
-                       save_files,on_window_close,
+                       save_files,
+                       on_window_close,
                        get_sizes_custom_window,
                        create_buttons
                        )
